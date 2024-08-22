@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>撮影アプリ</title>
+    <!-- フォントの埋め込みコード -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=BIZ+UD+Gothic:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- CSSファイルをリンク -->
+  </head>
+
+
+  <body>
+    <header>
+      <!-- <h3>タブメニュー</h3> -->
+      <button id="back-button">戻る</button>
+
+
+      <div id="menu-icon">&#9776;</div>
+      <nav id="nav-menu">
+        <ul>
+          <li id="li1">服の種類選択画面に戻る</li>
+          <li id="li2">撮影方法</li>
+          <li id="li3">利用規約</li>
+        </ul>
+      </nav>
+    </header>
+    <!-- 追加: オーバーレイ要素 -->
+    <div class="overlay" id="overlay"></div>
+
+
+    <!-- 規約画面 -->
+    <div class="scr" id="kiyaku">
+      <p>規約(初回だけ表示させる)</p>
+      <button id="kiyakudoui">同意する</button>
+    </div>
+
+
+    <!-- タイプ選択画面 -->
+    <div class="scr" id="typeselect">
+      <p>服の種類を選んでください</p>
+      <button id="tops">トップス</button>
+      <button id="bottoms">ボトムス</button>
+    </div>
+    <!-- 撮影方法選択画面 -->
+    <div class="scr" id="cameraselect">
+      <p>撮影方法を選んでください</p>
+      <!-- 外カメ内カメ変更ボタン -->
+      <button id="outcamera">外カメ</button>
+      <button id="incamera">内カメ</button>
+    </div>
+    <!-- トップス画面orボトムス画面　(テンプレ選択) -->
+    <div class="scr" id="tempselect">
+      <p>服の形を選んでください(トップスボトムス2種つくる)</p>
+      <div id="button-container">
+        <!-- ボタンがここに挿入されます -->
+      </div>
+      <button id="temp">デモ版はこのボタン</button>
+    </div>
+    <!-- 撮影注意画面 -->
+    <div class="scr" id="Beforeshooting">
+      <p>撮影時の注意点</p>
+      <button id="startshoot">撮影開始</button>
+    </div>
+    <!-- 撮影画面 -->
+    <div class="scr" id="shooting">
+      <p id="shootingtext">前面を撮影してください</p>
+      <!-- カメラ本体 -->
+      <div class="camera-container">
+        <video id="video" autoplay muted playsinline></video>
+        <div>
+          <!-- ガイドフレーム -->
+          <img
+            class="guide-frame"
+            src="前面 のコピー (1).png"
+            alt="ガイド画像がでます"
+          />
+          <!-- 追加: タイマー表示 -->
+          <div id="timer">5</div>
+        </div>
+        <!-- 撮影ボタン -->
+        <button id="capture">撮影</button>
+        <button id="toggle-camera">カメラ切り替え</button>
+        <button id="guidebtn">ガイドフレームの色</button>
+
+
+        <!-- ↓カメラの付属 -->
+        <canvas id="canvas" style="display: none"></canvas>
+      </div>
+    </div>
+    <!-- 確認画面（前） -->
+    <div class="scr" id="previewF">
+      <p>プレビュー（前）</p>
+      <div>
+        <img id="photoF" alt="ここに撮影した前面画像がでます" />
+      </div>
+      <button id="RetakeF">撮りなおす</button>
+      <button id="nextshoot">背面撮影に進む</button>
+    </div>
+    <!-- 確認画面（背） -->
+    <div class="scr" id="previewB">
+      <p>プレビュー（背）</p>
+      <div>
+        <img id="photoB" alt="ここに撮影した背面画像がでます" />
+      </div>
+      <button id="RetakeB">撮りなおす</button>
+      <button id="Shootingfinish">進む</button>
+    </div>
+    <!-- トップスの場合の袖選択画面3つ -->
+    <div class="scr" id="sleeve1">
+      <p>袖と背面部分は<br />同じデザイン（色や柄）ですか</p>
+      <!-- 袖3に遷移 -->
+      <button onclick="handleAnswer('yes', 'sleeve1')">はい</button>
+      <!-- 袖2に遷移 -->
+      <button onclick="handleAnswer('no', 'sleeve1')">いいえ</button>
+    </div>
+    <div class="scr" id="sleeve2">
+      <p>袖のデザインを選んでください</p>
+      <!-- 袖3に遷移 -->
+      <button onclick="handleAnswer('yes', 'sleeve2')">
+        無地、ワンポイントのみ
+      </button>
+      <!-- 袖の撮影をする -->
+      <button onclick="handleAnswer('no', 'sleeve2')">柄、デザインあり</button>
+    </div>
+    <div class="scr" id="sleeve3">
+      <p>背面にデザインがありますか</p>
+      <!-- 前面を使用する -->
+      <button onclick="handleAnswer('yes', 'sleeve3')">入っている</button>
+      <!-- 背面を使用する -->
+      <button onclick="handleAnswer('no', 'sleeve3')">入っていない</button>
+    </div>
+
+
+    <!-- 確認画面（最終）11 -->
+    <div class="scr" id="finalconfirmation">
+      <p>完成画像をだす</p>
+      <p>↓袖の切り抜き画像をデバッグ</p>
+      <canvas id="input" style="display: none"></canvas>
+      <canvas id="output"></canvas>
+
+
+      <a id="download" style="display: none">ダウンロード</a>
+      <button id="retakeAll">撮り直す</button>
+      <button id="finish">撮影終了</button>
+    </div>
+
+
+    <!-- 最終画面 -->
+    <div class="scr">
+      <p>撮影終了</p>
+      <button id="typeselectbtn">撮影選択画面に戻る</button>
+    </div>
+    <!-- メニューからの遷移先画面 -->
+    <div class="scr">
+      <p>利用規約とか撮影方法の画面をつくる</p>
+    </div>
+    <!-- ここからJS !!! -->
+    <script src="script.js"></script>
+    <!-- JSファイルをリンク -->
+  </body>
+</html>
